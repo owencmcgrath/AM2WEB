@@ -37,6 +37,3 @@ def parse_itunes_library(xml_path):
     return songs
 
 songs = parse_itunes_library('/Users/owenmcgrath/Downloads/library.xml')
-
-for song in songs:
-  print(f"Track: {song.get('Name')} by {song.get('Artist')}")
