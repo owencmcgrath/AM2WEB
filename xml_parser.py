@@ -38,6 +38,3 @@ def parse_itunes_library(xml_path):
             current_song = {}
 
     return songs
-
-
-songs = parse_itunes_library("/Users/owenmcgrath/Downloads/library.xml")
