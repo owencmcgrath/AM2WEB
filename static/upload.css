@@ -142,8 +142,9 @@ body {
 }
 
 .faq-section {
-  max-width: 1400px;
+  max-width: 1000px;
   margin: 0 auto;
+  border-radius: 100px;
 }
 
 .faq-item {
@@ -285,4 +286,16 @@ body {
   .github-link span, .portfolio-link span {
       display: none;
   }
+}
+
+.footer
+{
+  position: fixed;
+  left: 0;
+  bottom: 0;
+  width: 100%;
+  background-color: #f3f4f6;
+  color: #1f2937;
+  text-align: center;
+  padding: 1rem;
 }
