@@ -194,14 +194,7 @@ def login():
         else:
             flash("Invalid email or password")
 
-    return render_template("login.html")
-
-
-@app.route("/logout")
-def logout():
-    session.clear()
-    return redirect(url_for("login"))
-
+    return render_template("login.html");
 
 @app.route("/", methods=["GET", "POST"])
 @login_required
@@ -601,6 +594,29 @@ def library():
         never_skip=never_skip,
     )
 
+@app.route("/drop", methods=['POST'])
+def drop_table_personal_table():
+    if 'user_id' not in session:
+        return redirect(url_for('login'))
+        
+    try:
+        conn = mysql.connector.connect(**db_config)
+        cursor = conn.cursor()
+        
+        cursor.execute("TRUNCATE TABLE songs")
+        conn.commit()
+        
+        return redirect(url_for("upload"))
+    except Exception as e:
+        return "An error occurred while resetting data", 500
+    finally:
+        cursor.close()
+        conn.close()
+
+@app.route("/logout")
+def logout():
+    session.clear()
+    return redirect(url_for("login"))
 
 if __name__ == "__main__":
     app.run(debug=True)

@@ -546,6 +546,15 @@
     </div>
     {% endif %}
     </div>
+    <div class="action-buttons">
+      <form action="{{ url_for('drop_table_personal_table') }}" method="POST" style="display: inline;">
+        <button type="submit" class="action-button action-button-reset">
+          Restart
+        </button>
+      </form>
+      <a href="{{ url_for('logout') }}" class="action-button action-button-logout">
+        Logout
+      </a>
+    </div>
   </body>
-
 </html>

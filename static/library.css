@@ -577,3 +577,42 @@ body {
   padding:1.5rem;
   margin-bottom:1rem;
 }
+
+.action-buttons {
+  display: flex;
+  justify-content: center; /* Center horizontally */
+  align-items: center;    /* Center vertically */
+  gap: 2rem;             /* Increased space between buttons */
+  padding: 1.5rem 0;     /* More vertical padding */
+}
+
+.action-button {
+  padding: 1rem 2.5rem;  /* Larger padding */
+  border-radius: 0.5rem;
+  font-weight: 600;      /* Slightly bolder text */
+  font-size: 1.125rem;   /* Larger font size */
+  text-decoration: none;
+  border: none;
+  cursor: pointer;
+  transition: background-color 0.2s;
+}
+
+.action-button-reset {
+  background-color: #dc2626;
+  color: white;
+}
+
+.action-button-reset:hover {
+  background-color: #b91c1c;
+}
+
+.action-button-logout {
+  background-color: #4b5563;
+  color: white;
+  display: inline-flex;
+  align-items: center;
+}
+
+.action-button-logout:hover {
+  background-color: #374151;
+}
