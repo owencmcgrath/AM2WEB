@@ -1,560 +1,102 @@
-<!DOCTYPE html>
+<!doctype html>
 <html>
-  
-  <head>
-    <title>
-      Apple Music Stats.
-    </title>
-    <link rel="stylesheet" href="static/library.css">
-  </head>
-  
-  <body>
-    <div class="stats-header">
-      <div class="container">
-        <div class="stats-row">
-          <div class="stat-box"> 
-            <p class="stat-number stat-blue">
-              {{ "{:,}".format(stats.total_songs or 0) }}
-            </p>
-            <p class="stat-label">
-              Total Songs
-            </p>
-          </div>
-          <div class="stat-box">
-            <p class="stat-number stat-purple">
-              {{ "{:,}".format(stats.unique_artists or 0) }}
-            </p>
-            <p class="stat-label">
-              Artists
-            </p>
-          </div>
-          <div class="stat-box">
-            <p class="stat-number stat-green">
-              {{ "{:,}".format(stats.unique_albums or 0) }}
-            </p>
-            <p class="stat-label">
-              Albums
-            </p>
-          </div>
-          <div class="stat-box">
-            <p class="stat-number stat-red">
-              {{ "{:,.1f}".format(stats.total_hours or 0) }}
-            </p>
-            <p class="stat-label">
-              Hours
-            </p>
-          </div>
-          <div class="stat-box">
-            <p class="stat-number stat-indigo">
-              {{ "{:,}".format(stats.total_plays or 0) }}
-            </p>
-            <p class="stat-label">
-              Total Plays
-            </p>
-          </div>
-          <div class="stat-box">
-            <p class="stat-number stat-yellow">
-              {{ "{:,}".format(stats.favorite_count or 0) }}
-            </p>
-            <p class="stat-label">
-              Favorites
-            </p>
-          </div>
-        </div>
-      </div>
-    </div>
-    <div class="card">
-      <h3 class="card-title">
-        Most Active Listening Months
-      </h3>
-      <div class="stat-list">
-        {% for month in active_months %}
-        <div class="stat-item">
-          {% set month_names = ['January', 'February', 'March', 'April', 'May',
-          'June', 'July', 'August', 'September', 'October', 'November', 'December']
-          %}
-          <div class="stat-label">
-            {{ month_names[month.month - 1] }} {{ month.year }}
-          </div>
-          <div class="progress-bar-container">
-            {% set max_plays = active_months[0].play_count %} {% set percentage =
-            (month.play_count / max_plays * 100) | round %}
-            <div class="progress-bar" style="width: {{ percentage }}%">
-            </div>
-          </div>
-          <div class="stat-value">
-            {{ "{:,}".format(month.play_count) }} plays
-          </div>
-        </div>
-        {% endfor %}
-      </div>
-    </div>
-    <div class="card recent-activity">
-      <h3 class="card-title">Recent Activity</h3>
-      <div class="recent-stats">
-        <div class="recent-label">Songs Added in Last 30 Days</div>
-        <div class="recent-value">{{ recent_additions.new_songs }}</div>
-      </div>
-    </div>
-    <div class="card">
-      <h3 class="card-title">
-        Longest Songs
-      </h3>
-      <div class="song-list">
-        {% for song in longest_songs %}
-        <div class="song-item">
-          <div class="song-info">
-            <div class="song-name">
-              {{ song.name }}
-            </div>
-            <div class="song-artist">
-              {{ song.artist }}
-            </div>
-          </div>
-          <div class="song-duration">
-            {{ song.duration_minutes }} mins
-          </div>
-        </div>
-        {% endfor %}
-      </div>
-    </div>
-    <div class="card">
-      <h3 class="card-title">
-        Shortest Songs
-      </h3>
-      <div class="song-list">
-        {% for song in shortest_songs %}
-        <div class="song-item">
-          <div class="song-info">
-            <div class="song-name">
-              {{ song.name }}
-            </div>
-            <div class="song-artist">
-              {{ song.artist }}
-            </div>
-          </div>
-          <div class="song-duration">
-            {{ song.duration_minutes }} mins
-          </div>
-        </div>
-        {% endfor %}
-      </div>
-    </div>
-    <div class="card">
-      <h3 class="card-title">
-        Songs by Decade
-      </h3>
-      <div class="bar-chart">
-        {% for decade in decades %}
-        <div class="bar-group">
-          <div class="bar-label">
-            {{ decade.decade }}s
-          </div>
-          {% set max_count = decades|map(attribute='song_count')|max %} {% set height
-          = (decade.song_count / max_count * 300)|round %}
-          <div class="bar" style="height: {{ height }}px">
-            <span class="bar-value">
-              {{ decade.song_count }}
-            </span>
-          </div>
-        </div>
-        {% endfor %}
-      </div>
-    </div>
-    <div class="card">
-      <h3 class="card-title">
-        Most Skipped Songs
-      </h3>
-      <div class="song-list">
-        {% for song in most_skipped %}
-        <div class="song-item">
-          <div class="song-info">
-            <div class="song-name">
-              {{ song.name }}
-            </div>
-            <div class="song-artist">
-              {{ song.artist }}
-            </div>
-          </div>
-          <div class="song-stats">
-            <div class="stats-details">
-              <span>
-                Played: {{ song.play_count }}
-              </span>
-              <span>
-                Skipped: {{ song.skip_count }}
-              </span>
-            </div>
-            <div class="skip-ratio">
-              {{ song.skip_ratio }}%
-            </div>
-          </div>
-        </div>
-        {% endfor %}
-      </div>
-    </div>
-    <div class="card">
-      <h3 class="card-title">
-        Most Frequently Played
-      </h3>
-      <div class="song-list">
-        {% for song in most_replayed %}
-        <div class="song-item">
-          <div class="song-info">
-            <div class="song-name">
-              {{ song.name }}
-            </div>
-            <div class="song-artist">
-              {{ song.artist }}
-            </div>
-          </div>
-          <div class="song-stats">
-            <div class="stats-details">
-              <span>
-                {{ song.play_count }} plays
-              </span>
-              <span>
-                {{ song.days_in_library }} days in library
-              </span>
-            </div>
-            <div class="plays-per-day">
-              {{ song.plays_per_day }} plays/day
-            </div>
-          </div>
-        </div>
-        {% endfor %}
-      </div>
-    </div>
-    <div class="container">
-      {% if listening_times %}
-      <div class="section">
-        <h2 class="section-title">
-          Listening Patterns
-        </h2>
-        <div class="grid-2">
-          <div class="card">
-            <h3 class="card-title">
-              Time of Day
-            </h3>
-            <div class="stat-list">
-              {% for time in listening_times %}
-              <div class="stat-item">
-                <div class="stat-label">
-                  {{ time.time_of_day or 'Unknown' }}
+    <head>
+        <title>Apple Music Stats</title>
+        <link rel="stylesheet" href="static/library.css" />
+        <link
+            rel="stylesheet"
+            href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css"
+        />
+    </head>
+    <body>
+        <nav class="navbar">
+            <div class="nav-left">
+                <div class="logo">
+                    <i class="fa-brands fa-apple"></i>
+                    <span>Music Stats</span>
                 </div>
-                <div class="progress-bar-container">
-                  {% set max_plays = listening_times[0].play_count or 1 %} {% set percentage
-                  = ((time.play_count or 0) / max_plays * 100) | round %}
-                  <div class="progress-bar" style="width: {{ percentage }}%">
-                  </div>
-                </div>
-                <div class="stat-value">
-                  {{ "{:,}".format(time.play_count or 0) }}
-                </div>
-              </div>
-              {% endfor %}
             </div>
-          </div>
-          {% if listening_days %}
-          <div class="card">
-            <h3 class="card-title">
-              Days of Week
-            </h3>
-            <div class="stat-list">
-              {% for day in listening_days %}
-              <div class="stat-item">
-                <div class="stat-label">
-                  {{ day.day_name or 'Unknown' }}
-                </div>
-                <div class="progress-bar-container">
-                  {% set max_plays = listening_days[0].play_count or 1 %} {% set percentage
-                  = ((day.play_count or 0) / max_plays * 100) | round %}
-                  <div class="progress-bar" style="width: {{ percentage }}%">
-                  </div>
-                </div>
-                <div class="stat-value">
-                  {{ "{:,}".format(day.play_count or 0) }}
-                </div>
-              </div>
-              {% endfor %}
-            </div>
-          </div>
-          {% endif %}
-        </div>
-      </div>
-      {% endif %} {% if complete_albums or most_played_albums %}
-      <div class="section">
-        <h2 class="section-title">
-          Album Analysis
-        </h2>
-        <div class="grid-2">
-          {% if complete_albums %}
-          <div class="card">
-            <h3 class="card-title">
-              Most Complete Albums
-            </h3>
-            <div class="album-list">
-              {% for album in complete_albums %}
-              <div class="album-item">
-                <div class="album-info">
-                  <div class="album-name">
-                    {{ album.album or 'Unknown Album' }}
-                  </div>
-                  <div class="album-artist">
-                    {{ album.artist or 'Unknown Artist' }}
-                  </div>
-                </div>
-                <div class="album-stats">
-                  <div class="progress-bar-container">
-                    <div class="progress-bar" style="width: {{ album.completion_percentage or 0 }}%">
+            <div class="nav-right">
+                <div class="user-profile">
+                    <button class="profile-button" onclick="toggleDropdown()">
+                        <i class="fas fa-user-circle"></i>
+                    </button>
+                    <div class="dropdown-menu" id="profileDropdown">
+                        <a href="{{ url_for('logout') }}">Logout</a>
                     </div>
-                  </div>
-                  <div class="completion-rate">
-                    {{ album.songs_in_library or 0 }}/{{ album.total_album_songs or 0 }} songs
-                    ({{ "{:.1f}".format(album.completion_percentage or 0) }}%)
-                  </div>
                 </div>
-              </div>
-              {% endfor %}
             </div>
-          </div>
-          {% endif %} {% if most_played_albums %}
-          <div class="card">
-            <h3 class="card-title">
-              Most Played Albums
-            </h3>
-            <div class="album-list">
-              {% for album in most_played_albums %}
-              <div class="album-item">
-                <div class="album-info">
-                  <div class="album-name">
-                    {{ album.album or 'Unknown Album' }}
-                  </div>
-                  <div class="album-artist">
-                    {{ album.artist or 'Unknown Artist' }}
-                  </div>
-                </div>
-                <div class="album-stats">
-                  <div class="plays-info">
-                    <span class="total-plays">
-                      {{ "{:,}".format(album.total_plays or 0) }} plays
-                    </span>
-                    <span class="avg-plays">
-                      ({{ "{:.1f}".format(album.avg_plays_per_track or 0) }} per track)
-                    </span>
-                  </div>
-                </div>
-              </div>
-              {% endfor %}
+        </nav>
+
+        <div class="main-content">
+            <div class="upload-section">
+                <form method="post" action="{{ url_for('library') }}" enctype="multipart/form-data">
+                    <div class="upload-area">
+                        <div class="upload-content">
+                            <div class="upload-text">
+                                <label for="file-upload" class="upload-button">
+                                    <span>Upload Library XML</span>
+                                    <input
+                                        id="file-upload"
+                                        name="file"
+                                        type="file"
+                                        class="hidden"
+                                        accept=".xml"
+                                    />
+                                </label>
+                            </div>
+                        </div>
+                    </div>
+                    <button type="submit" class="submit-button">Upload</button>
+                </form>
             </div>
-          </div>
-          {% endif %}
+
+            <div class="stats-grid">
+                {% for i in range(0, monthly_stats|length, 3) %}
+                    <div class="stats-row">
+                        {% for stat in monthly_stats[i:i+3] %}
+                            <div class="month-card">
+                                <h3>{{ stat.month }}</h3>
+                                <div class="stat-content">
+                                    <p class="stat-item">
+                                        <span class="stat-label">Top Artist:</span>
+                                        <span class="stat-value">{{ stat.top_artist or 'N/A' }}</span>
+                                    </p>
+                                    <p class="stat-item">
+                                        <span class="stat-label">Top Album:</span>
+                                        <span class="stat-value">{{ stat.top_album or 'N/A' }}</span>
+                                    </p>
+                                    <p class="stat-item">
+                                        <span class="stat-label">Minutes Played:</span>
+                                        <span class="stat-value">{{ stat.minutes_played or '0' }}</span>
+                                    </p>
+                                </div>
+                            </div>
+                        {% endfor %}
+                    </div>
+                {% endfor %}
+            </div>
         </div>
-      </div>
-      {% endif %} {% if genre_evolution %}
-      <div class="section">
-        <h2 class="section-title">
-          Genre Evolution
-        </h2>
-        <div class="grid-2">
-          <div class="card">
-            <h3 class="card-title">
-              By Decade
-            </h3>
-            <div class="decade-list">
-              {% set ns = namespace(current_decade=none) %} {% for genre in genre_evolution
-              %} {% if genre.decade != ns.current_decade %} {% if ns.current_decade is
-              not none %}
-            </div>
-            {% endif %} {% set ns.current_decade = genre.decade %}
-            <div class="decade-group">
-              <h4 class="decade-title">
-                {{ genre.decade or 'Unknown' }}s
-              </h4>
-              {% endif %}
-              <div class="genre-item">
-                <span class="genre-name">
-                  {{ genre.genre or 'Unknown Genre' }}
-                </span>
-                <span class="genre-count">
-                  {{ "{:,}".format(genre.song_count or 0) }} songs
-                </span>
-              </div>
-              {% endfor %} {% if genre_evolution %}
-            </div>
-            {% endif %}
-          </div>
-        </div>
-        {% if genre_time %}
-        <div class="card">
-          <h3 class="card-title">
-            Listening Time by Genre
-          </h3>
-          <div class="genre-time-list">
-            {% for genre in genre_time %}
-            <div class="genre-time-item">
-              <div class="genre-info">
-                <span class="genre-name">
-                  {{ genre.genre or 'Unknown Genre' }}
-                </span>
-                <span class="song-count">
-                  {{ "{:,}".format(genre.song_count or 0) }} songs
-                </span>
-              </div>
-              <div class="time-info">
-                <span class="total-time">
-                  {{ "{:.1f}".format(genre.total_hours or 0) }} hours
-                </span>
-                <span class="avg-time">
-                  ({{ "{:.1f}".format(genre.avg_minutes_per_song or 0) }} mins/song)
-                </span>
-              </div>
-            </div>
-            {% endfor %}
-          </div>
-        </div>
-        {% endif %}
-      </div>
-    </div>
-    {% endif %} {% if artist_growth or consistent_artists %}
-    <div class="section">
-      <h2 class="section-title">
-        Artist Analysis
-      </h2>
-      <div class="grid-2">
-        {% if artist_growth %}
-        <div class="card">
-          <h3 class="card-title">
-            Artist Growth
-          </h3>
-          <div class="artist-growth-list">
-            {% for artist in artist_growth %}
-            <div class="artist-growth-item">
-              <div class="artist-name">
-                {{ artist.artist or 'Unknown Artist' }}
-              </div>
-              <div class="artist-timeline">
-                <div class="timeline-info">
-                  <span class="first-added">
-                    First: {% if artist.first_added %} {{ artist.first_added.strftime('%Y-%m-%d')
-                    }} {% else %} Unknown {% endif %}
-                  </span>
-                  <span class="last-added">
-                    Last: {% if artist.last_added %} {{ artist.last_added.strftime('%Y-%m-%d')
-                    }} {% else %} Unknown {% endif %}
-                  </span>
-                </div>
-                <div class="collection-info">
-                  {{ "{:,}".format(artist.total_songs or 0) }} songs, {{ "{:,}".format(artist.total_plays
-                  or 0) }} plays
-                </div>
-              </div>
-            </div>
-            {% endfor %}
-          </div>
-        </div>
-        {% endif %} {% if consistent_artists %}
-        <div class="card">
-          <h3 class="card-title">
-            Most Consistent Artists
-          </h3>
-          <div class="consistent-list">
-            {% for artist in consistent_artists %}
-            <div class="consistent-item">
-              <div class="artist-name">
-                {{ artist.artist or 'Unknown Artist' }}
-              </div>
-              <div class="consistency-stats">
-                <span class="avg-plays">
-                  {{ "{:.1f}".format(artist.avg_plays or 0) }} avg plays
-                </span>
-                <span class="play-deviation">
-                  ±{{ "{:.1f}".format(artist.play_count_stddev or 0) }}
-                </span>
-              </div>
-            </div>
-            {% endfor %}
-          </div>
-        </div>
-        {% endif %}
-      </div>
-    </div>
-    {% endif %} {% if growers or never_skip %}
-    <div class="section">
-      <h2 class="section-title">
-        Personal Favorites
-      </h2>
-      <div class="grid-2">
-        {% if growers %}
-        <div class="card">
-          <h3 class="card-title">
-            Growers
-          </h3>
-          <div class="song-list">
-            {% for song in growers %}
-            <div class="song-item">
-              <div class="song-info">
-                <div class="song-name">
-                  {{ song.name or 'Unknown Song' }}
-                </div>
-                <div class="song-artist">
-                  {{ song.artist or 'Unknown Artist' }}
-                </div>
-              </div>
-              <div class="play-stats">
-                <span class="play-count">
-                  {{ "{:,}".format(song.play_count or 0) }} plays
-                </span>
-                <span class="plays-per-day">
-                  {{ "{:.2f}".format(song.plays_per_day or 0) }}/day
-                </span>
-              </div>
-            </div>
-            {% endfor %}
-          </div>
-        </div>
-        {% endif %} {% if never_skip %}
-        <div class="card">
-          <h3 class="card-title">
-            Never Skip
-          </h3>
-          <div class="song-list">
-            {% for song in never_skip %}
-            <div class="song-item">
-              <div class="song-info">
-                <div class="song-name">
-                  {{ song.name or 'Unknown Song' }}
-                </div>
-                <div class="song-artist">
-                  {{ song.artist or 'Unknown Artist' }}
-                </div>
-              </div>
-              <div class="play-stats">
-                <span class="play-count">
-                  {{ "{:,}".format(song.play_count or 0) }} plays
-                </span>
-                <span class="completion-rate">
-                  100% completion
-                </span>
-              </div>
-            </div>
-            {% endfor %}
-          </div>
-        </div>
-        {% endif %}
-      </div>
-    </div>
-    {% endif %}
-    </div>
-    <div class="action-buttons">
-      <form action="{{ url_for('drop_table_personal_table') }}" method="POST" style="display: inline;">
-        <button type="submit" class="action-button action-button-reset">
-          Restart
-        </button>
-      </form>
-      <a href="{{ url_for('logout') }}" class="action-button action-button-logout">
-        Logout
-      </a>
-    </div>
-  </body>
+
+        <script>
+            function toggleDropdown() {
+                document
+                    .getElementById("profileDropdown")
+                    .classList.toggle("show");
+            }
+
+            window.onclick = function (event) {
+                if (!event.target.matches(".profile-button")) {
+                    var dropdowns =
+                        document.getElementsByClassName("dropdown-menu");
+                    for (var i = 0; i < dropdowns.length; i++) {
+                        var openDropdown = dropdowns[i];
+                        if (openDropdown.classList.contains("show")) {
+                            openDropdown.classList.remove("show");
+                        }
+                    }
+                }
+            };
+        </script>
+    </body>
 </html>
