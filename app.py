@@ -99,7 +99,7 @@ def get_album_artwork(artist, album):
 @app.route("/", methods=["GET", "POST"])
 @login_required
 def home():
-    return render_template("landing.html")
+    return render_template("templates/landing.html")
 
 @app.route("/library", methods=["GET", "POST"])
 @login_required

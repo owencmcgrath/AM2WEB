@@ -4,7 +4,7 @@
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>Infinite Image Carousel</title>
+  <title>AM2Web</title>
   <style>
     :root {
       --primary: #3B82F6;
@@ -303,101 +303,11 @@
 
   <div class="title">
     <h1 class="animated-title">Democratizing the Replay.</h1>
-    <h2 class="animated-subtitle">Your music, your stats, your time.</h2>
+    <h2 class="animated-subtitle">Your music, your artists, your statistics.</h2>
+    <h3 class="animated-subsubtitle">Upload Your Library</h3>
   </div>
 
-  <script>
-    document.addEventListener('DOMContentLoaded', () => {
-      const albumGrid = document.querySelector('.album-grid');
-      const backgroundCarousel = document.querySelector('.background-carousel');
-      const columns = document.querySelectorAll('.album-column');
-      let isAnimationPaused = false;
-
-      // Set up each column with initial position data
-      columns.forEach((column, columnIndex) => {
-        // Store all album items for this column
-        const items = Array.from(column.querySelectorAll('.album-item'));
-
-        // Fixed spacing between items
-        const imageHeight = 200; // Height of album images in pixels
-        const spacing = 50; // Increased spacing between items in pixels
-        const totalItemHeight = imageHeight + spacing;
-
-        // Space items evenly at the start
-        items.forEach((item, index) => {
-          // Clear existing CSS animation
-          item.style.animation = 'none';
-
-          // Position each item with fixed spacing from the previous one
-          // Start with some items in view
-          const startY = -150 + (index * totalItemHeight);
-
-          // Add a small column-specific offset for staggered appearance
-          const columnOffset = columnIndex * 20;
-
-          // Set the initial position
-          item.style.transform = `translateY(${startY + columnOffset}px)`;
-        });
-
-        // Store items and column speed
-        column.items = items;
-        // Slightly different speed per column
-        column.speed = 0.7 + (columnIndex * 0.1);
-      });
-
-      // Animation function
-      function animateColumns() {
-        if (isAnimationPaused) return;
-
-        columns.forEach(column => {
-          column.items.forEach((item, index) => {
-            // Get current position
-            const transform = item.style.transform;
-            let currentY = parseFloat(transform.replace('translateY(', '').replace('px)', ''));
-
-            // Move item down
-            currentY += column.speed;
-
-            // Update position
-            item.style.transform = `translateY(${currentY}px)`;
-
-            // If item has moved off-screen, reset to top
-            if (currentY > window.innerHeight + 200) {
-              // Find the topmost item in this column
-              let topItemY = Infinity;
-              column.items.forEach(otherItem => {
-                if (otherItem === item) return;
-                const otherY = parseFloat(otherItem.style.transform.replace('translateY(', '').replace('px)', ''));
-                if (otherY < topItemY) {
-                  topItemY = otherY;
-                }
-              });
-
-              // Position this item above the current topmost item
-              const imageHeight = 200;
-              const spacing = 50;
-              const newY = topItemY - imageHeight - spacing;
-              item.style.transform = `translateY(${newY}px)`;
-            }
-          });
-        });
-
-        requestAnimationFrame(animateColumns);
-      }
-
-      // Start animation
-      requestAnimationFrame(animateColumns);
-
-      // Pause animation on hover
-      backgroundCarousel.addEventListener('mouseenter', () => {
-        isAnimationPaused = true;
-      });
-
-      backgroundCarousel.addEventListener('mouseleave', () => {
-        isAnimationPaused = false;
-        requestAnimationFrame(animateColumns);
-      });
-    });
+  <script src=" /static/script/landing.js">
   </script>
 </body>
 
