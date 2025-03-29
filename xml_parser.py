@@ -1,6 +1,5 @@
 import xml.etree.ElementTree as ET
 from datetime import datetime
-import re
 
 
 def parse_itunes_library(xml_path):
