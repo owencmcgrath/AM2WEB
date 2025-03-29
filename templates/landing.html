@@ -36,7 +36,6 @@
       z-index: -1;
       overflow: hidden;
       background: rgb(255, 255, 255);
-      filter: progid:DXImageTransform.Microsoft.gradient(startColorstr="#ffffff", endColorstr="#f52938", GradientType=1);
     }
 
     @keyframes gradientFlow {
@@ -167,56 +166,29 @@
       margin-top: 1rem;
     }
 
-    .subtitle {
-      font-size: 1rem;
-      font-weight: bold;
-      color: rgba(255, 255, 255, 0.9);
-      opacity: 0;
-      animation: fadeInUp 2s ease forwards 1s;
-      margin-top: 3rem;
-      background-color: rgba(245, 41, 56, 1);
-      padding: 15px 20px;
-      border-radius: 10px;
-      border: none;
-      display: inline-block;
-    }
-
-    .play-button {
-      display: flex;
+    .apple-music-button {
+      display: inline-flex;
       align-items: center;
       justify-content: center;
-      gap: 8px;
-      background: linear-gradient(135deg, #ff2d55, #ff375f, #f02849, #fa233b);
+      background-color: #FF2D55;
       color: white;
       border: none;
-      padding: 8px 18px;
-      border-radius: 20px;
+      border-radius: 8px;
+      padding: 10px 15px;
       font-size: 1rem;
       font-weight: 600;
-      cursor: pointer;
-      transition: all 0.3s ease;
-      box-shadow: 0 4px 10px rgba(0, 0, 0, 0.3);
-      margin-top: 2rem;
-      text-shadow: var(--text-shadow);
-    }
-
-    .play-button:hover {
-      transform: translateY(-3px);
-      box-shadow: 0 6px 15px rgba(0, 0, 0, 0.4);
-    }
-
-    .play-button:active {
-      transform: translateY(1px);
+      transition: all 0.2s ease;
       box-shadow: 0 2px 5px rgba(0, 0, 0, 0.2);
+      margin-top: 2rem;
+      opacity: 0;
+      animation: fadeInUp 2s ease forwards 1s;
     }
 
     .play-icon {
-      width: 0;
-      height: 0;
-      border-style: solid;
-      border-width: 6px 0 6px 10px;
-      border-color: transparent transparent transparent white;
-      margin-right: 2px;
+      margin-right: 8px;
+      display: inline-block;
+      width: 32px;
+      height: 32px;
     }
 
     @keyframes fadeInUp {
@@ -364,8 +336,10 @@
   <div class="title">
     <h1 class="animated-title">Democratizing the Replay.</h1>
     <h2 class="animated-subtitle">Your music, your artists, your statistics.</h2>
-    <button class="subtitle">
-      <span class="play-icon"></span>
+    <button class="apple-music-button">
+      <svg class="play-icon" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg">
+        <path fill="white" d="M8,5.14V19.14L19,12.14L8,5.14Z" style="rx: 2px; ry: 2px;" />
+      </svg>
       See your library
     </button>
   </div>
