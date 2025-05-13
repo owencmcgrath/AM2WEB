@@ -64,7 +64,7 @@ def insert_songs_to_db(user_id, songs):
             cursor.execute(
                 """
                 INSERT INTO songs (
-                    userid, track_id, name, artist, album_artist, composer, album, genre,
+                    id, track_id, name, artist, album_artist, composer, album, genre,
                     kind, size, total_time, disc_number, disc_count, track_number,
                     track_count, year, date_modified, date_added, play_count,
                     play_date, play_date_utc, skip_count, skip_date, release_date,
@@ -156,7 +156,7 @@ def library():
             album,
             total_time
         FROM songs
-        WHERE userid = %(user_id)s
+        WHERE id = %(user_id)s
             AND play_date_utc IS NOT NULL
             AND YEAR(play_date_utc) = YEAR(CURDATE())
     ),
@@ -261,7 +261,7 @@ def login():
         conn.close()
 
         if user and check_password_hash(user["password"], password):
-            session["user_id"] = user["userid"]
+            session["user_id"] = user["id"]
             flash("Login successful!")
             return redirect(url_for("library"))
         else:
