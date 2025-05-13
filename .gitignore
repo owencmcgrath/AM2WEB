@@ -9,3 +9,5 @@ uploads/
 **/.DS_Store
 .clj-kondo/.cache/v1/clj/user.transit.json
 node_modules/
+package.json/
+package-lock.json/
