@@ -5,6 +5,7 @@
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <title>AM2Web</title>
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css">
   <style>
     :root {
       --primary: #3B82F6;
@@ -184,11 +185,8 @@
       animation: fadeInUp 2s ease forwards 1s;
     }
 
-    .play-icon {
+    .apple-music-button .fa-play {
       margin-right: 8px;
-      display: inline-block;
-      width: 32px;
-      height: 32px;
     }
 
     @keyframes fadeInUp {
@@ -336,15 +334,38 @@
   <div class="title">
     <h1 class="animated-title">Democratizing the Replay.</h1>
     <h2 class="animated-subtitle">Your music, your artists, your statistics.</h2>
-    <button class="apple-music-button">
-      <svg class="play-icon" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg">
-        <path fill="white" d="M8,5.14V19.14L19,12.14L8,5.14Z" style="rx: 2px; ry: 2px;" />
-      </svg>
-      See your library
-    </button>
+    <form method="POST" action="{{ url_for('library') }}" enctype="multipart/form-data">
+      <button type="button" class="apple-music-button" id="uploadButton">
+        <i class="fa-solid fa-play" style="color: #ffffff;"></i>
+        See your library
+      </button>
+      <input type="file" id="xmlFileUpload" name="file" accept=".xml" style="display: none;" />
+      <button type="submit" id="submitButton" style="display: none;">Submit</button>
+    </form>
   </div>
 
-  <script src="/static/script/landing.js">
+  <script src="/static/script/landing.js"></script>
+  <script>
+    document.addEventListener('DOMContentLoaded', function () {
+      const uploadButton = document.getElementById('uploadButton');
+      const fileInput = document.getElementById('xmlFileUpload');
+      const submitButton = document.getElementById('submitButton');
+
+      uploadButton.addEventListener('click', function () {
+        fileInput.click();
+      });
+
+      fileInput.addEventListener('change', function (event) {
+        const file = event.target.files[0];
+        if (file) {
+          if (file.type === 'text/xml' || file.name.endsWith('.xml')) {
+            submitButton.click();
+          } else {
+            alert('Please select an XML file.');
+          }
+        }
+      });
+    });
   </script>
 </body>
 
