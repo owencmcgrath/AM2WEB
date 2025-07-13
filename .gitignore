@@ -1,4 +1,12 @@
 node_modules
 
 /generated/prisma
+
+# Environment files - ignore in all directories and variations
 .env
+.env.*
+*.env
+**/.env
+**/.env.*
+**/env
+env
