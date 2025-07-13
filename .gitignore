@@ -1,13 +1,3 @@
-.env
-.__pycache__
-*.pyc
-.gitignore
-uploads/
-/db.sql
-.lsp/.cache/db.transit.json
-.clj-kondo/.cache/v1/lock
-**/.DS_Store
-.clj-kondo/.cache/v1/clj/user.transit.json
-node_modules/
-package.json/
-package-lock.json/
+node_modules
+
+/generated/prisma
