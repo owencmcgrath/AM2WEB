@@ -15,8 +15,9 @@ export async function POST(req: NextRequest) {
   //save uploaded XML to a temporary file for parsing
   const xml = await req.text();
   logging.info(`[DEBUG] - Received XML length: ${xml.length}`);
-  const tempPath = "/tmp/library.xml";
-  fs.writeFileSync(tempPath, xml);
+  const tempDir = fs.mkdtempSync("/tmp/library-");
+  const tempPath = `${tempDir}/library.xml`;
+  await fs.writeFile(tempPath, xml);
   logging.info(`[DEBUG] - XML written to temporary file: ${tempPath}`);
 
   try {
@@ -52,7 +53,7 @@ export async function POST(req: NextRequest) {
   } catch (err) {
     logging.error("[ERROR] - Exception in parseSongsFromPlistFile", err);
     return NextResponse.json(
-      { error: "Failed to parse plist", details: err },
+      { error: "Failed to parse plist", details: err.message },
       { status: 400 }
     );
   } finally {
