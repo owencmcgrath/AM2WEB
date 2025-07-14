@@ -17,7 +17,7 @@ export async function POST(req: NextRequest) {
   logging.info(`[DEBUG] - Received XML length: ${xml.length}`);
   const tempDir = fs.mkdtempSync("/tmp/library-");
   const tempPath = `${tempDir}/library.xml`;
-  fs.writeFileSync(tempPath, xml);
+  await fs.writeFile(tempPath, xml);
   logging.info(`[DEBUG] - XML written to temporary file: ${tempPath}`);
 
   try {
