@@ -53,7 +53,7 @@ export async function POST(req: NextRequest) {
   } catch (err) {
     logging.error("[ERROR] - Exception in parseSongsFromPlistFile", err);
     return NextResponse.json(
-      { error: "Failed to parse plist", details: err },
+      { error: "Failed to parse plist", details: err.message },
       { status: 400 }
     );
   } finally {
