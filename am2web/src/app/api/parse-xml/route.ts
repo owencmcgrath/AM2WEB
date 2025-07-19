@@ -47,8 +47,9 @@ export async function POST(req: NextRequest) {
     return NextResponse.json({ titles });
   } catch (err) {
     logging.error("[ERROR] - Exception in parseSongsFromPlistFile", err);
+    const errorMessage = err instanceof Error ? err.message : "Unknown error";
     return NextResponse.json(
-      { error: "Failed to parse plist", details: err.message },
+      { error: "Failed to parse plist", details: errorMessage },
       { status: 400 }
     );
   } finally {
