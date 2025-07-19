@@ -14,7 +14,6 @@ export async function POST(req: NextRequest) {
   const tempPath = `${tempDir}/library.xml`;
   await writeFile(tempPath, xml);
   logging.info(`[DEBUG] - XML written to temporary file: ${tempPath}`);
-  logging.info(`[DEBUG] - XML written to temporary file: ${tempPath}`);
 
   try {
     //parse the XML file using simple-plist
