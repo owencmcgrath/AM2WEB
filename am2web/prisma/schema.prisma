@@ -1,0 +1,60 @@
+// This is your Prisma schema file,
+// learn more about it in the docs: https://pris.ly/d/prisma-schema
+
+// Looking for ways to speed up your queries, or scale easily with your serverless or edge functions?
+// Try Prisma Accelerate: https://pris.ly/cli/accelerate-init
+
+generator client {
+  provider = "prisma-client-js"
+}
+
+datasource db {
+  provider = "postgresql"
+  url      = env("DATABASE_URL")
+}
+
+model User {
+  id        Int      @id @default(autoincrement())
+  firstname String
+  lastname  String
+  email     String   @unique
+  password  String
+  createdAt DateTime @default(now())
+}
+
+model Song {
+  id                 Int      @id @default(autoincrement())
+  track_id           Int?     @unique
+  name               String?
+  artist             String?  @db.VarChar(255)
+  album_artist       String?  @db.VarChar(255)
+  composer           String?  @db.Text
+  album              String?  @db.VarChar(255)
+  genre              String?  @db.VarChar(100)
+  kind               String?  @db.VarChar(50)
+  size               BigInt?
+  total_time         Int?
+  disc_number        Int?
+  disc_count         Int?
+  track_number       Int?
+  track_count        Int?
+  year               Int?
+  date_modified      DateTime?
+  date_added         DateTime?
+  play_count         Int?     @default(0)
+  play_date          BigInt?
+  play_date_utc      DateTime?
+  skip_count         Int?     @default(0)
+  skip_date          DateTime?
+  release_date       DateTime?
+  favorited          Boolean? @default(false)
+  loved              Boolean? @default(false)
+  artwork_count      Int?
+  sort_album         String?  @db.VarChar(255)
+  sort_artist        String?  @db.VarChar(255)
+  sort_name          String?  @db.VarChar(255)
+  persistent_id      String?  @db.VarChar(16)
+  track_type         String?  @db.VarChar(50)
+  protected          Boolean?
+  apple_music        Boolean?
+}
