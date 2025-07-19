@@ -2,22 +2,18 @@ import { NextRequest, NextResponse } from "next/server";
 import plist from "simple-plist";
 import logging from "../../utils/logging";
 import fs from "fs";
+import { writeFile } from "fs/promises";
+import os from "os";
 
-/**
- * POST /api/parse-xml
- * Receives an Apple Music/iTunes XML library file as the request body,
- * parses it using simple-plist, and returns an array of song titles.
- * Logs every major step and error for debugging and traceability.
- */
 export async function POST(req: NextRequest) {
   logging.info("[INFO] - Received POST request to /api/parse-xml");
-
   //save uploaded XML to a temporary file for parsing
   const xml = await req.text();
   logging.info(`[DEBUG] - Received XML length: ${xml.length}`);
-  const tempDir = fs.mkdtempSync("/tmp/library-");
+  const tempDir = os.tmpdir();
   const tempPath = `${tempDir}/library.xml`;
-  await fs.writeFile(tempPath, xml);
+  await writeFile(tempPath, xml);
+  logging.info(`[DEBUG] - XML written to temporary file: ${tempPath}`);
   logging.info(`[DEBUG] - XML written to temporary file: ${tempPath}`);
 
   try {
